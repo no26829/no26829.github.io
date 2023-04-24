@@ -12,9 +12,9 @@
 <script>
 
     // set the dimensions and margins of the graph
-    var margin = {top: 0, right: 50, bottom: 90, left: 60},
-      width = 2000- margin.left - margin.right,
-      height = 450 - margin.top - margin.bottom;
+    var margin = {top: 0, right: 600, bottom: 100, left: 60},
+      width = 2100- margin.left - margin.right,
+      height = 650 - margin.top - margin.bottom;
     
     // append the svg object to the body of the page
     var svg = d3.select("#my_dataviz")
@@ -47,7 +47,7 @@
     
       // A linear scale to position the nodes on the X axis
       var x = d3.scalePoint()
-        .range([0, width+200])
+        .range([0, width+190])
         .domain(allNodes)
     
       // In my input data, links are provided between nodes -id-, NOT between node names.
@@ -76,7 +76,7 @@
         .style("fill", "none")
         .attr("stroke", "grey")
         .style("stroke-width", 1)
-    
+
       // Add the circle for the nodes
       var nodes = svg
         .selectAll("mynodes")
@@ -101,51 +101,41 @@
           .style("text-anchor", "end")
           .attr("transform", function(d){ return( "translate(" + (x(d.name)) + "," + (height-20) + ")rotate(-45)")})
           .style("font-size", 4)
-      
-      var tooltip = svg
-        .append("text")
-          .text(function(d){ return(d.definition)} )
-
-      
+        
       // Add the highlighting functionality
       nodes
-        .on('mouseover', function (d) {return tooltip} {
+        .on('mouseover', function (d) {
           // Highlight the nodes
+
           nodes
             .style('opacity', .2)
+    
           d3.select(this)
-            .style('opacity', 1) 
-            .attr("stroke", "black")
-
+            .style('opacity', 1)
 
           // Highlight the connections
-          
           links
             .style('stroke', function (link_d) { return link_d.source === d.id || link_d.target === d.id ? color(d.grp) : '#b8b8b8';})
             .style('stroke-opacity', function (link_d) { return link_d.source === d.id || link_d.target === d.id ? 1 : .2;})
             .style('stroke-width', function (link_d) { return link_d.source === d.id || link_d.target === d.id ? 4 : 1;})
           labels
             .style("font-size", function(label_d){ return label_d.name === d.name ? 18 : 1 } )
-            .attr("y", function(label_d){ return label_d.name === d.name ? 5 : 1 } )
-          
-          
-  
-  
-    
 
-
+          // display definition 
+  
         })
         .on('mouseout', function (d) {
           nodes.style('opacity', 1)
-          .attr("stroke", "white")
           links
             .style('stroke', 'grey')
             .style('stroke-opacity', .8)
             .style('stroke-width', '1')
           labels
             .style("font-size", 6 )
-    
+          def
+            .style('opacity', 0)
+
         })
     })
-    
+  
     </script>
